@@ -32,7 +32,7 @@ func UserViewHandler(users map[string]User) http.HandlerFunc {
 			http.Error(rw, "cant't provide a json", http.StatusInternalServerError)
 			return
 		}
-
+		rw.Header().Set("Content-Type", "application/json")
 		rw.WriteHeader(http.StatusOK)
 		rw.Write(jsonUser)
 	}
