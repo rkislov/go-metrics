@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/rkislov/go-metrics.git/internal/entity"
 	"github.com/rkislov/go-metrics.git/internal/handlers"
 	"io/ioutil"
 	"net/http"
@@ -10,9 +11,12 @@ import (
 )
 
 func TestShowMetricsUnauthenticated(t *testing.T) {
+	ms := entity.NewMemoryStorage()
+	handler := handlers.NewHandler(ms)
+
 	r := getRouter(true)
 
-	r.GET("/", handlers.ShowMetrics)
+	r.GET("/", handler.ShowMetrics)
 
 	req, _ := http.NewRequest("GET", "/", nil)
 
