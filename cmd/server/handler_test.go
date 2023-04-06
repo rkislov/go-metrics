@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/rkislov/go-metrics.git/internal/entity"
 	"github.com/rkislov/go-metrics.git/internal/handlers"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -23,7 +23,7 @@ func TestShowMetricsUnauthenticated(t *testing.T) {
 	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
 		statusOK := w.Code == http.StatusOK
 
-		p, err := ioutil.ReadAll(w.Body)
+		p, err := io.ReadAll(w.Body)
 		pageOK := err == nil && strings.Index(string(p), "<title>Metrics</title>") > 0
 
 		return pageOK && statusOK
