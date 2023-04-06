@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rkislov/go-metrics.git/cmd/server/entity"
-	handlers "github.com/rkislov/go-metrics.git/cmd/server/handlers"
+	"github.com/rkislov/go-metrics.git/internal/entity"
+	"github.com/rkislov/go-metrics.git/internal/handlers"
 	"log"
 )
 
@@ -12,7 +12,7 @@ func main() {
 	handler := handlers.NewHandler(memoryStorage)
 	r := gin.Default()
 
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("../../internal/templates/*")
 
 	r.GET("/", handler.ShowMetrics)
 	r.POST("/update/:type/:name/:value", handler.UpdateOrCreate)

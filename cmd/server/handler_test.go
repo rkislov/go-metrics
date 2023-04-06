@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/rkislov/go-metrics.git/cmd/server/entity"
-	"github.com/rkislov/go-metrics.git/cmd/server/handlers"
+	"github.com/rkislov/go-metrics.git/internal/entity"
+	"github.com/rkislov/go-metrics.git/internal/handlers"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
