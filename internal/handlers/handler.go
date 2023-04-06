@@ -53,4 +53,5 @@ func (h *Handler) UpdateOrCreate(c *gin.Context) {
 	fmt.Sprintf("%v", metric)
 
 	c.JSON(http.StatusCreated, gin.H{"message": "ok"})
+
 }
