@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rkislov/go-metrics.git/internal/entity"
 	"net/http"
@@ -30,7 +29,7 @@ func (h *Handler) ShowMetrics(c *gin.Context) {
 		})
 }
 
-func (h *Handler) UpdateOrCreate(c *gin.Context) {
+func (h *Handler) UpdateOrCrate(c *gin.Context) {
 	var metric entity.Metric
 
 	vp := c.Param("value")
@@ -50,7 +49,6 @@ func (h *Handler) UpdateOrCreate(c *gin.Context) {
 	}
 	metric.ID = existMetric.ID
 	h.storage.Update(metric)
-	fmt.Sprintf("%v", metric)
 
 	c.JSON(http.StatusCreated, gin.H{"message": "ok"})
 

@@ -18,8 +18,8 @@ var (
 		{Type: "gauge", Name: "Alloc", Value: 0000},
 		{Type: "gauge", Name: "BuckHashSys", Value: 0001},
 	}
-	ErrMissingValues = errors.New("Пустые значения")
-	ErrNotExists     = errors.New("Такого ID нет")
+	ErrMissingValues = errors.New("пустые значения")
+	ErrNotExists     = errors.New("такого ID нет")
 )
 
 type Storage interface {
