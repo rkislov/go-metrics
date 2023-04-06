@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rkislov/go-metrics.git/internal/entity"
+	"github.com/rkislov/go-metrics.git/cmd/server/entity"
 	"net/http"
 	"net/http/httptest"
 	"os"
