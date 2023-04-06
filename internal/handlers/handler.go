@@ -29,7 +29,7 @@ func (h *Handler) ShowMetrics(c *gin.Context) {
 		})
 }
 
-func (h *Handler) UpdateOrCrate(c *gin.Context) {
+func (h *Handler) UpdateOrCreate(c *gin.Context) {
 	var metric entity.Metric
 
 	vp := c.Param("value")
