@@ -2,19 +2,38 @@ package entity
 
 import "testing"
 
-func TestGetAllMetrics(t *testing.T) {
-	allMetrics := GetAll()
-
-	if len(allMetrics) != len(MetricsList) {
-		t.Fail()
+func TestMetric_NewMetric(t *testing.T) {
+	type testCase struct {
+		test        string
+		types       string
+		name        string
+		value       float64
+		expectedErr error
 	}
-	for i, v := range allMetrics {
-		if v.Type != allMetrics[i].Type ||
-			v.Name != allMetrics[i].Name ||
-			v.Value != allMetrics[i].Value ||
-			v.Id != allMetrics[i].Id {
-			t.Fail()
-			break
-		}
+
+	testCases := []testCase{
+		{
+			test:        "emtpy name",
+			types:       "",
+			name:        "",
+			value:       0,
+			expectedErr: ErrMissingValues,
+		},
+		{
+			test:        "valid value",
+			types:       "type",
+			name:        "name",
+			value:       1.0,
+			expectedErr: nil,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.test, func(t *testing.T) {
+			_, err := NewMetric(tc.name, tc.types, tc.value)
+			if err != tc.expectedErr {
+				t.Errorf("Expexted error: %v, got %v", tc.expectedErr, err)
+			}
+		})
+
 	}
 }

@@ -1,17 +1,27 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rkislov/go-metrics.git/internal/entity"
-	"github.com/rkislov/go-metrics.git/internal/repository"
 	"net/http"
 	"strconv"
 )
 
-func ShowMetrics(c *gin.Context) {
-	repo := repository.NewInMemRepo()
-	metrics := repo.GetAll()
+type Handler struct {
+	storage entity.Storage
+}
 
+func NewHandler(storage entity.Storage) *Handler {
+	return &Handler{storage: storage}
+}
+
+func (h *Handler) ShowMetrics(c *gin.Context) {
+
+	metrics, err := h.storage.GetAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
 	c.HTML(
 		http.StatusOK,
 		"index.html",
@@ -20,18 +30,27 @@ func ShowMetrics(c *gin.Context) {
 		})
 }
 
-func UpdateOrCreate(c *gin.Context) {
-	repo := repository.NewInMemRepo()
+func (h *Handler) UpdateOrCreate(c *gin.Context) {
 	var metric entity.Metric
+
 	vp := c.Param("value")
 	value, _ := strconv.ParseFloat(vp, 64)
 	metric.Name = c.Param("name")
 	metric.Type = c.Param("type")
 	metric.Value = value
-	if repo.IsExist(metric.Name) {
-		repo.Update(metric)
-	} else {
-		repo.AddMetric(metric)
+
+	existMetric, err := h.storage.GetByName(metric.Name)
+	if err != nil {
+		nm, err := entity.NewMetric(metric.Type, metric.Name, metric.Value)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "bad request"})
+		}
+		h.storage.Add(&nm)
+
 	}
+	metric.ID = existMetric.ID
+	h.storage.Update(metric)
+	fmt.Sprintf("%v", metric)
+
 	c.JSON(http.StatusCreated, gin.H{"message": "ok"})
 }

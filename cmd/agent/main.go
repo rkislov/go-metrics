@@ -21,10 +21,11 @@ func main() {
 	for {
 		startWork := time.Now()
 		u := 0
-		urls[u] = fmt.Sprintf("http://127.0.0.1/update/gauge/RandomValue/%d", rand.Intn(10000))
+		urls[u] = fmt.Sprintf("http://127.0.0.1:8080/update/gauge/RandomValue/%d", rand.Intn(10000))
 		u++
-		urls[u] = fmt.Sprintf("http://127.0.0.1/update/counter/%d", i)
+		urls[u] = fmt.Sprintf("http://127.0.0.1:8080/update/counter/PollCount/%d", i)
 		u++
+		i++
 		runtime.ReadMemStats(&memory)
 		v := reflect.ValueOf(memory)
 		typeOfV := v.Type()
