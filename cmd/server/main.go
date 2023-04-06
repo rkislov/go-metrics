@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rkislov/go-metrics.git/cmd/server/entity"
-	"github.com/rkislov/go-metrics.git/cmd/server/handlers"
+	handlers "github.com/rkislov/go-metrics.git/cmd/server/handlers"
 	"log"
 )
 
