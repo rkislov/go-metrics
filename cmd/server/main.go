@@ -1,21 +1,28 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/rkislov/go-metrics.git/internal/entity"
-	"github.com/rkislov/go-metrics.git/internal/handlers"
+	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/rkislov/go-metrics.git/internal/config"
+	"github.com/rkislov/go-metrics.git/internal/server"
 )
 
 func main() {
-	memoryStorage := entity.NewMemoryStorage()
-	handler := handlers.NewHandler(memoryStorage)
-	r := gin.Default()
+	cfg := config.LoadConfig()
+	dataServer := server.New(*cfg.Server)
+	cancelChan := make(chan os.Signal, 1)
+	signal.Notify(cancelChan, os.Interrupt, syscall.SIGTERM, syscall.SIGINT, syscall.SIGQUIT)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	go func() {
+		<-cancelChan
+		cancel()
+	}()
+	dataServer.Run(ctx)
 
-	r.LoadHTMLGlob("../../internal/templates/*")
-
-	r.GET("/", handler.ShowMetrics)
-	r.POST("/update/:type/:name/:value", handler.UpdateOrCreate)
-
-	log.Fatal(r.Run())
+	log.Println("Program end")
 }
